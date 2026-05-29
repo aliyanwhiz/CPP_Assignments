@@ -2,8 +2,6 @@
 
 using namespace std;
 
-const int ROWS = 12;
-const int COLS = 7;
 
 bool bookFirstClass(int Seats[][7], int rows, int cols, int noOfSeats);
 bool bookBusinessClass(int Seats[][7], int rows, int cols, int noOfSeats);
@@ -14,7 +12,7 @@ void viewSeatingPlan(int Seats[][7], int rows, int cols);
 bool systemReset(int Seats[][7], int rows, int cols);
 
 int main() {
-    int seatingPlan[ROWS][COLS] = {0};
+    int seatingPlan[12][7] = {0};
     int choice;
 
     do {
@@ -36,7 +34,7 @@ int main() {
             int seatsToBook;
             cout << "Enter number of seats to book in First Class: ";
             cin >> seatsToBook;
-            if (!bookFirstClass(seatingPlan, ROWS, COLS, seatsToBook)) {
+            if (!bookFirstClass(seatingPlan, 12, 7, seatsToBook)) {
                 cout << "Booking failed. Not enough seats available in First Class.\n";
             } else {
                 cout << "Seats booked successfully in First Class.\n";
@@ -46,7 +44,7 @@ int main() {
             int seatsToBook;
             cout << "Enter number of seats to book in Business Class: ";
             cin >> seatsToBook;
-            if (!bookBusinessClass(seatingPlan, ROWS, COLS, seatsToBook)) {
+            if (!bookBusinessClass(seatingPlan, 12, 7, seatsToBook)) {
                 cout << "Booking failed. Not enough seats available in Business Class.\n";
             } else {
                 cout << "Seats booked successfully in Business Class.\n";
@@ -56,20 +54,20 @@ int main() {
             int seatsToBook;
             cout << "Enter number of seats to book in Economy Class: ";
             cin >> seatsToBook;
-            if (!bookEconomyClass(seatingPlan, ROWS, COLS, seatsToBook)) {
+            if (!bookEconomyClass(seatingPlan, 12, 7, seatsToBook)) {
                 cout << "Booking failed. Not enough seats available in Economy Class.\n";
             } else {
                 cout << "Seats booked successfully in Economy Class.\n";
             }
         } 
         else if (choice == 4) {
-            viewSeatingPlan(seatingPlan, ROWS, COLS);
+            viewSeatingPlan(seatingPlan, 12, 7);
         } 
         else if (choice == 5) {
             getFare();
         } 
         else if (choice == 6) {
-            if (systemReset(seatingPlan, ROWS, COLS)) {
+            if (systemReset(seatingPlan, 12, 7)) {
                 cout << "System reset successful. All seats are now available.\n";
             }
         } 
