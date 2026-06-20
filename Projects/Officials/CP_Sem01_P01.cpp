@@ -1,404 +1,426 @@
 #include <iostream>
-#include <string>
-#include <cctype>
 
 using namespace std;
 
-// --- Node Structure ---
-struct Node {
+// node for the list
+struct Node
+{
     int data;
-    Node* next;
+    Node *next; // pointer to next block
 };
 
-// --- Function Prototypes ---
-void insert_begin(Node*& head, int d);
-void insert_end(Node*& head, int d);
-void insert_at(Node*& head, int d, int p);
-void delete_begin(Node*& head);
-void delete_end(Node*& head);
-void delete_at(Node*& head, int p);
-void delete_data(Node*& head, int d);
-void display_list(Node* head);
-void search_data(Node* head, int d); 
-void count_duplicates(Node* head, int x);     
-void reverse_list(Node*& head);
-void sort_list(Node* head);
-int get_size(Node* head);
-void clear_list(Node*& head); 
-void show_memory_usage(Node* head);
+// --- MY FUNCTIONS ---
+void display_list(Node *head);
+void insert_begin(Node *&head, int d);
+void insert_end(Node *&head, int d);
+void insert_at(Node *&head, int d, int p);
+void delete_begin(Node *&head);
+void delete_end(Node *&head);
+void delete_at(Node *&head, int p);
+void delete_data(Node *&head, int d);
+void search_data(Node *head, int d);
+int get_size(Node *head);
+void sort_list(Node *head);
+void reverse_list(Node *&head);
+void clear_list(Node *&head);
+void show_memory_usage(Node *head);       // NEW FEATURE
+void count_duplicates(Node *head, int x); // NEW + 1 FEATURE
 
-// --- Menu Functions ---
-void show_grid_menu();
-int parse_menu_selection(string input);
+int main()
+{
+    Node *head = NULL; // empty a the start
+    int choice, data, position;
 
-int main() {
-    Node* head = NULL; 
-    string selection;
-    int data, position;
+    while (true)
+    {
+        cout << "\nLinked List System\n\n";
+        cout << "1. insert at start\n";
+        cout << "2. insert at end\n";
+        cout << "3. insert at n position\n";
+        cout << "4. delete from start\n";
+        cout << "5. delete from end\n";
+        cout << "6. delete from n position\n";
+        cout << "7. delete by data\n";
+        cout << "8. Search by data\n";
+        cout << "9. Print list!\n";
+        cout << "10. Node Count\n";
+        cout << "11. Sort (ASC)\n";
+        cout << "12. Flip list\n";
+        cout << "13. delete all\n";              // clear option
+        cout << "14. Check RAM usage (bytes)\n"; // memory usage option
+        cout << "15. Check Duplicate\n";         // memory usage option
+        cout << "16. quit program\n";
+        cin >> choice;
 
-    while (true) {
-        show_grid_menu();
-        cout << "Enter selection code: ";
-        cin >> selection;
-
-        int mapped_choice = parse_menu_selection(selection);
-
-        if (mapped_choice == 15) { 
-            clear_list(head);
-            cout << "\nMemory cleared. Exiting program.\n";
+        if (choice == 16)
+        {
+            clear_list(head); // clean up memory
+            cout << "prog end\n";
             return 0;
         }
 
-        switch (mapped_choice) {
-            // --- GROUP 1: INSERTIONS ---
-            case 1: 
-                cout << "Enter integer value to insert at beginning: "; cin >> data;
-                insert_begin(head, data);
-                break;
-            case 2: 
-                cout << "Enter integer value to insert at end: "; cin >> data;
-                insert_end(head, data);
-                break;
-            case 3: 
-                cout << "Enter integer value to insert: "; cin >> data;
-                cout << "Enter position (1-based index): "; cin >> position;
+        switch (choice)
+        {
+        case 1:
+            cout << "enter data : ";
+            cin >> data;
+            insert_begin(head, data);
+            break;
+        case 2:
+            cout << "enter data : ";
+            cin >> data;
+            insert_end(head, data);
+            break;
+        case 3:
+            cout << "enter data : ";
+            cin >> data;
+            cout << "What slot? ";
+            cin >> position;
+            if (position <= (get_size(head) + 1))
+            {
                 insert_at(head, data, position);
-                break;
-
-            // --- GROUP 2: DELETIONS ---
-            case 4: 
-                delete_begin(head);
-                cout << "Deleted from beginning.\n";
-                break;
-            case 5: 
-                delete_end(head);
-                cout << "Deleted from end.\n";
-                break;
-            case 6: 
-                cout << "Enter position to delete (1-based index): "; cin >> position;
+            }
+            else
+            {
+                cout << "Invalid slot" << endl;
+            }
+            break;
+        case 4:
+            delete_begin(head);
+            break;
+        case 5:
+            delete_end(head);
+            break;
+        case 6:
+            cout << "node to delete : ";
+            cin >> position;
+            if (position <= (get_size(head) + 1))
+            {
                 delete_at(head, position);
-                break;
-            case 7: 
-                cout << "Enter value to delete: "; cin >> data;
-                delete_data(head, data);
-                break;
-
-            // --- GROUP 3: SEARCH & UTILITIES ---
-            case 8: 
-                cout << "Enter value to search: "; cin >> data;
-                search_data(head, data);
-                break;
-            case 9: 
-                cout << "Enter value to check for duplicates: "; cin >> data;
-                count_duplicates(head, data);
-                break;
-            case 10: 
-                cout << "Current number of nodes: " << get_size(head) << "\n";
-                break;
-
-            // --- GROUP 4: TRANSFORMATIONS ---
-            case 11: 
-                sort_list(head);
-                cout << "List sorted in ascending order.\n";
-                break;
-            case 12: 
-                reverse_list(head);
-                cout << "List successfully flipped/reversed.\n";
-                break;
-
-            // --- GROUP 5: SYSTEM & VIEW ---
-            case 13: 
-                display_list(head);
-                break;
-            case 14: 
-                show_memory_usage(head);
-                break;
-            case 16: 
-                clear_list(head);
-                break;
-
-            default:
-                cout << "\n[!] Invalid Selection code. Please try again.\n";
+            }
+            else
+            {
+                cout << "Invalid node" << endl;
+            }
+            break;
+        case 7:
+            cout << "data to delete :";
+            cin >> data;
+            delete_data(head, data);
+            break;
+        case 8:
+        {
+            cout << "Enter value to search: ";
+            cin >> data;
+            search_data(head, data);
+            break;
+        }
+        case 9:
+            display_list(head);
+            break;
+        case 10:
+            cout << "Total nodes : " << get_size(head) << "\n";
+            break;
+        case 11:
+            sort_list(head);
+            break;
+        case 12:
+            reverse_list(head);
+            cout << "Flipped\n";
+            break;
+        case 13:
+            clear_list(head);
+            break;
+        case 14:
+            show_memory_usage(head);
+            break;
+        case 15:
+            cout << "Duplicate check for: ";
+            cin >> data;
+            count_duplicates(head, data);
+            break;
+        default:
+            cout << "Invalid..\n";
         }
     }
 }
 
-// --- Menu UI & Logic Mapping ---
-void show_grid_menu() {
-    cout << "\n=========================================================================\n";
-    cout << "                    LINKED LIST CONTROLLER                                 \n";
-    cout << "=========================================================================\n";
-    cout << " [1] INSERTIONS         [2] DELETIONS            [3] SEARCH & UTILS      \n";
-    cout << " ------------------     ------------------       ------------------      \n";
-    cout << "  1A. At Beginning       2A. From Beginning       3A. Enhanced Search     \n";
-    cout << "  1B. At End             2B. From End             3B. Check Duplicates    \n";
-    cout << "  1C. At Position (n)    2C. From Position (n)    3C. Size Counter        \n";
-    cout << "                         2D. By Value Instance                            \n";
-    cout << " ------------------------------------------------------------------------\n";
-    cout << " [4] Sorting            [5] SYSTEM OPERATIONS                             \n";
-    cout << " ------------------     ------------------                               \n";
-    cout << "  4A. Sort (Ascending)   5A. Print/Display List                           \n";
-    cout << "  4B. Flip/Reverse List  5B. Check RAM Usage                              \n";
-    cout << "                         5C. Wipe/Clear List                              \n";
-    cout << "                         5D. Quit Program                                 \n";
-    cout << "=========================================================================\n";
-}
-
-int parse_menu_selection(string input) {
-    // Loop through like a normal person and use the character toupper
-    for (size_t i = 0; i < input.length(); i++) {
-        input[i] = toupper(input[i]);
-    }
-
-    if (input == "1A") return 1;
-    if (input == "1B") return 2;
-    if (input == "1C") return 3;
-    if (input == "2A") return 4;
-    if (input == "2B") return 5;
-    if (input == "2C") return 6;
-    if (input == "2D") return 7;
-    if (input == "3A") return 8;
-    if (input == "3B") return 9;
-    if (input == "3C") return 10;
-    if (input == "4A") return 11;
-    if (input == "4B") return 12;
-    if (input == "5A") return 13;
-    if (input == "5B") return 14;
-    if (input == "5C") return 16;
-    if (input == "5D") return 15; 
-    
-    return -1; 
-}
-
-// --- Dynamic Boxed Printing ---
-void display_list(Node* head) {
-    if (head == NULL) {
-        cout << "The list is empty.\n";
+// prints everything with cool arrows
+void display_list(Node *head)
+{
+    if (head == NULL)
+    {
+        cout << "list is empty.\n";
         return;
     }
-    Node* temp = head;
-    while (temp != NULL) {
-        cout << "(" << temp->data << ")";
-        if (temp->next != NULL) {
+    Node *temp2 = head; // named it temp2 because why not
+    while (temp2 != NULL)
+    {
+        cout << "(" << temp2->data << ")";
+        if (temp2->next != NULL)
+        {
             cout << "-->";
-        } else {
+        }
+        else
+        {
             cout << "-->NULL";
         }
-        temp = temp->next;
+        temp2 = temp2->next;
     }
     cout << "\n";
 }
 
-// --- Complete Structural Memory Clear ---
-void clear_list(Node*& head) {
-    if (head == NULL) {
-        cout << "List is already empty.\n";
+// wipes the whole thing out
+void clear_list(Node *&head)
+{
+    if (head == NULL)
+    {
+        cout << "list is already empty.\n";
         return;
     }
-    Node* current = head;
-    while (current != NULL) {
-        Node* nextNode = current->next;
-        delete current; 
+    Node *current = head;
+    while (current != NULL)
+    {
+        Node *nextNode = current->next;
+        delete current; // Begone!
         current = nextNode;
     }
-    head = NULL; 
-    cout << "List completely wiped out of RAM.\n";
+    head = NULL; // reset it or everything goes boom
+    cout << "list deleted.\n";
 }
 
-// --- Insertion Mechanics ---
-void insert_begin(Node*& head, int d) {
-    Node* newNode = new Node();
-    newNode->data = d;
-    newNode->next = head;
-    head = newNode;
+void insert_begin(Node *&head, int d)
+{
+    Node *n = new Node(); // made a new one
+    n->data = d;
+    n->next = head;
+    head = n;
 }
 
-void insert_end(Node*& head, int d) {
-    Node* newNode = new Node();
-    newNode->data = d;
-    newNode->next = NULL;
-    if (head == NULL) {
-        head = newNode;
+void insert_end(Node *&head, int d)
+{
+    Node *n = new Node();
+    n->data = d;
+    n->next = NULL;
+    if (head == NULL)
+    {
+        head = n;
         return;
     }
-    Node* temp = head;
-    while (temp->next != NULL)
-        temp = temp->next;
-    temp->next = newNode;
+    Node *t = head;
+    while (t->next != NULL)
+    {
+        t = t->next;
+    }
+    t->next = n;
 }
 
-void insert_at(Node*& head, int d, int p) {
-    if (p < 1) return;
-    if (p == 1) {
+void insert_at(Node *&head, int d, int p)
+{
+    if (p < 1)
+        return;
+    if (p == 1)
+    {
         insert_begin(head, d);
         return;
     }
-    Node* temp = head;
-    for (int i = 1; i < p - 1 && temp != NULL; i++)
-        temp = temp->next;
-    if (temp == NULL) {
-        cout << "Invalid slot position layout.\n";
-        return;
+    Node *t = head;
+    for (int i = 1; i < p - 1 && t != NULL; i++)
+    {
+        t = t->next;
     }
-    Node* newNode = new Node();
-    newNode->data = d;
-    newNode->next = temp->next;
-    temp->next = newNode;
+    if (t == NULL)
+        return; // position out of bounds, generic exit
+    Node *n = new Node();
+    n->data = d;
+    n->next = t->next;
+    t->next = n;
 }
 
-// --- Deletion Mechanics ---
-void delete_begin(Node*& head) {
-    if (head == NULL) return;
-    Node* temp = head;
+void delete_begin(Node *&head)
+{
+    if (head == NULL)
+        return;
+    Node *t = head;
     head = head->next;
-    delete temp;
+    delete t;
 }
 
-void delete_end(Node*& head) {
-    if (head == NULL) return;
-    if (head->next == NULL) {
+void delete_end(Node *&head)
+{
+    if (head == NULL)
+        return;
+    if (head->next == NULL)
+    {
         delete head;
         head = NULL;
         return;
     }
-    Node* temp = head;
-    while (temp->next->next != NULL)
-        temp = temp->next;
-    delete temp->next;
-    temp->next = NULL;
+    Node *t = head;
+    while (t->next->next != NULL)
+    {
+        t = t->next;
+    }
+    delete t->next;
+    t->next = NULL;
 }
 
-void delete_at(Node*& head, int p) {
-    if (head == NULL || p < 1) return;
-    if (p == 1) {
+void delete_at(Node *&head, int p)
+{
+    if (head == NULL || p < 1)
+        return;
+    if (p == 1)
+    {
         delete_begin(head);
         return;
     }
-    Node* temp = head;
-    for (int i = 1; i < p - 1 && temp != NULL; i++)
-        temp = temp->next;
-    if (temp == NULL || temp->next == NULL) {
-        cout << "Target node position boundaries out of index scope.\n";
-        return;
+    Node *t = head;
+    for (int i = 1; i < p - 1 && t != NULL; i++)
+    {
+        t = t->next;
     }
-    Node* nodeToDelete = temp->next;
-    temp->next = temp->next->next;
-    delete nodeToDelete;
+    if (t == NULL || t->next == NULL)
+        return;
+    Node *killMe = t->next;
+    t->next = t->next->next;
+    delete killMe;
 }
 
-void delete_data(Node*& head, int d) {
-    if (head == NULL) return;
-    if (head->data == d) {
+void delete_data(Node *&head, int d)
+{
+    if (head == NULL)
+        return;
+    if (head->data == d)
+    {
         delete_begin(head);
         return;
     }
-    Node* temp = head;
-    while (temp->next != NULL && temp->next->data != d)
-        temp = temp->next;
-    if (temp->next == NULL) {
-        cout << "Target item value element not found within structure context.\n";
-        return;
+    Node *t = head;
+    while (t->next != NULL && t->next->data != d)
+    {
+        t = t->next;
     }
-    Node* nodeToDelete = temp->next;
-    temp->next = temp->next->next;
-    delete nodeToDelete;
+    if (t->next == NULL)
+        cout << d << ": Not found.";
+        return;
+    Node *killMe = t->next;
+    t->next = t->next->next;
+    delete killMe;
 }
 
-// --- Searching Operations ---
-void search_data(Node* head, int d) {
-    Node* temp = head;
-    int index = 0;
+void search_data(Node *head, int d)
+{
+    Node *temp = head;
+    int index = 1;
     int totalMatches = 0;
-    
-    while (temp != NULL) {
-        if (temp->data == d) {
+
+    while (temp != NULL)
+    {
+        if (temp->data == d)
+        {
             cout << "Found at " << temp << " | " << index << " index\n";
             totalMatches++;
         }
         temp = temp->next;
         index++;
     }
-    
-    if (totalMatches == 0) {
+
+    if (totalMatches == 0)
+    {
         cout << "Element not found.\n";
-    } else {
+    }
+    else
+    {
         cout << "Total instances discovered: " << totalMatches << "\n";
     }
 }
 
-// --- Duplicate Counter ---
-void count_duplicates(Node* head, int x) {
-    Node* temp = head;
-    int occurrenceCount = 0;
-    
-    while (temp != NULL) {
-        if (temp->data == x) {
-            occurrenceCount++;
-        }
-        temp = temp->next;
-    }
-    
-    cout << "Value " << x << " matches found inside collection: " << occurrenceCount << " duplicates.\n";
-}
-
-// --- Helper Utilities ---
-int get_size(Node* head) {
+int get_size(Node *head)
+{
     int count = 0;
-    Node* temp = head;
-    while (temp != NULL) {
+    Node *t = head;
+    while (t != NULL)
+    {
         count++;
-        temp = temp->next;
+        t = t->next;
     }
     return count;
 }
 
-// --- Transforming & Sorting Operations ---
-void sort_list(Node* head) {
-    if (head == NULL || head->next == NULL) return;
+// sort bubble
+void sort_list(Node *head)
+{
+    if (head == NULL || head->next == NULL)
+        return;
     bool swapped;
-    Node* ptr1;
-    Node* lptr = NULL;
-    do {
+    Node *p1;
+    Node *last = NULL;
+    do
+    {
         swapped = false;
-        ptr1 = head;
-        while (ptr1->next != lptr) {
-            if (ptr1->data > ptr1->next->data) {
-                int tempVal = ptr1->data;
-                ptr1->data = ptr1->next->data;
-                ptr1->next->data = tempVal;
+        p1 = head;
+        while (p1->next != last)
+        {
+            if (p1->data > p1->next->data)
+            {
+                int fallback = p1->data;
+                p1->data = p1->next->data;
+                p1->next->data = fallback;
                 swapped = true;
             }
-            ptr1 = ptr1->next;
+            p1 = p1->next;
         }
-        lptr = ptr1;
+        last = p1;
     } while (swapped);
+    cout << "List sorted.\n";
 }
 
-void reverse_list(Node*& head) {
-    if (head == NULL || head->next == NULL) return;
-    Node* prev = NULL;
-    Node* current = head;
-    Node* nextNode = NULL;
-    while (current != NULL) {
-        nextNode = current->next;
-        current->next = prev;
-        prev = current;
-        current = nextNode;
+// flipping
+void reverse_list(Node *&head)
+{
+    if (head == NULL || head->next == NULL)
+        return;
+    Node *logicPrev = NULL;
+    Node *logicCurrent = head;
+    Node *logicNext = NULL;
+    while (logicCurrent != NULL)
+    {
+        logicNext = logicCurrent->next;
+        logicCurrent->next = logicPrev;
+        logicPrev = logicCurrent;
+        logicCurrent = logicNext;
     }
-    head = prev;
+    head = logicPrev;
 }
 
-// --- RAM Profiler/Estimator ---
-void show_memory_usage(Node* head) {
+// --- NEW FEATURES ---
+void show_memory_usage(Node *head)
+{
     int total_nodes = get_size(head);
+    // scale up calculations for sizes
     size_t node_size = sizeof(Node);
     size_t total_bytes = total_nodes * node_size;
     size_t total_bits = total_bytes * 8;
-    
-    cout << "\n=== RAM MEMORY ALLOCATION ESTIMATOR ===\n";
-    cout << "Size of single structural Node : " << node_size << " bytes\n";
-    cout << " -> Dynamic components: [int payload: " << sizeof(int) << " bytes] + [Pointer context: " << sizeof(Node*) << " bytes]\n";
-    cout << "Total Active Nodes in system   : " << total_nodes << "\n";
-    cout << "Aggregated Memory Occupied    : " << total_bytes << " bytes (" << total_bits << " bits)\n";
-    cout << "=======================================\n";
+
+    // cout << "Size of single Node: " << node_size << " bytes\n";
+    // cout << " -> (int data takes " << sizeof(int) << " bytes + Node* next pointer takes " << sizeof(Node*) << " bytes)\n";
+    // cout << "Total Nodes inside list: " << total_nodes << "\n";
+    cout << "Total space in RAM: " << total_bytes << " bytes (" << total_bits << " bits!)\n";
+}
+
+void count_duplicates(Node *head, int x)
+{
+    Node *temp = head;
+    int occurrenceCount = 0;
+
+    while (temp != NULL)
+    {
+        if (temp->data == x)
+        {
+            occurrenceCount++;
+        }
+        temp = temp->next;
+    }
+
+    cout << "Value " << x << " found " << occurrenceCount << " times in the list.\n";
 }
